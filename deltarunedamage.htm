@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  
+  <title>My Page</title>
+  <style>
+    select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* add padding to compensate for arrow removal */
+  padding-right: 1em;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+}
+input {
+  background-color: black;
+  color: white;
+  font-size: 20px;
+}
+    body {
+      font-family: Arial;
+      background-color: black;
+      color: white;
+    }
+    .box {
+      display: inline-block;
+      border: 1px solid black;
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
+      height: 400px;
+      text-align: left;
+      vertical-align:top;
+      line-height: 2;
+      background-color: black;
+      color: white; 
+      outline: 2px solid white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" style="line-height: 2; width: 300px; height: 400px;">
+    <h2>Setup</h2>
+    <label for="chapter-select">LV</label>
+    <select id="chapter-select" onchange="updateChapter()" style="margin-left:207px; width: 58px;">
+      <option value="1">1</option>
+      <option value="2">2</option>
+    </select>
+    <br>
+    <label for="kill-count-pre">Chapter 2 Kills [Before Noelle]</label>
+<input type="number" id="kill-count-pre" value="0" style="width: 50px; margin-left:10px;" min="0"; oninput="updateStats(); if ((isNaN(this.value) || parseInt(this.value) != this.value || this.value < 0)) {this.value = '';}" onblur="if (isNaN(this.value)) {this.value = 0;}">
+
+    <br>
+    <label for="kill-count-post">Chapter 2 Kills [After Noelle]   </label>
+<input type="number" id="kill-count-post" value="0" style="width: 50px; margin-left:24px;" min="0"; oninput="updateStats()"; if ((isNaN(this.value) || parseInt(this.value) != this.value || this.value < 0)) {this.value = '';}" onblur="if (isNaN(this.value)) {this.value = 0;}">
+
+
+    <br>
+    <label for="enemy-select">Enemy</label>
+    <select id="enemy-select" onchange="updateEnemyStats()" >
+      <option value="">[Select Enemy]</option>
+    </select>
+    <div id="jevil-field" style="display:none">
+      <label for="jevil-kills" style="color:plum;">Number of pirouettes that lowered Jevil's defense</label>
+      <input type="number" id="jevil-special-pirouettes" value="0" style="width: 50px;" oninput="updateEnemyStats()">
+    </div>
+    <p>ENEMY DEF: <span id="enemy-def"></span></p>
+    <br>
+  </div>
+
+
+
+  <div class="box">
+    <h2><img src="imgs/Kris.png" align="center">Kris</h2>
+    <label for="kris-weapon"><img src="imgs/Sword.png" align="center"></label>
+    <select id="kris-weapon" onchange="updateKrisStats()" style="width:200px;">
+      <option value="WoodBlade">WoodBlade</option>
+      <option value="SpookySword">SpookySword</option>
+      <option value="MechaSaber">MechaSaber</option>
+      <option value="BounceBlade">BounceBlade</option>
+    </select>
+    <br>
+    <label for="kris-armor1"><img src="imgs/Armor1.png" vertical-align="middle" align="center"></label>
+    <select id="kris-armor1" onchange="updateKrisStats()" style="margin-left:11px; width:200px;">
+      <option value="Nothing">Nothing</option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <label for="kris-armor2"><img src="imgs/Armor2.png" align="center"></label>
+    <select id="kris-armor2" onchange="updateKrisStats()" style="margin-left:11px; width:200px;">
+      <option value="Nothing">Nothing
+      </option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <p>ATK <span id="kris-atk"></span></p>
+  </div>
+  <div class="box">
+    <h2><img src="imgs/Susie.png" align="center">Susie</h2>
+    <label for="sus-weapon"><img src="imgs/Axe.png" align="center" ></label>
+    <select id="sus-weapon" onchange="updateSusStats()" style="width:200px;">
+      <option value="ManeAx">ManeAx</option>
+      <option value="BraveAx">BraveAx</option>
+      <option value="DevilsKnife">DevilsKnife</option>
+      <option value="AutoAx">AutoAx</option>
+    </select>
+    <br>
+    <label for="sus-armor1"><img src="imgs/Armor1.png" align="center"></label>
+    <select id="sus-armor1" onchange="updateSusStats()" style="margin-left:11px; width:200px;">
+      <option value="Nothing">Nothing</option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <label for="sus-armor2"><img src="imgs/Armor2.png" align="center"></label>
+    <select id="sus-armor2" onchange="updateSusStats()" style="margin-left:11px; width:200px;">
+      <option value="Nothing">Nothing</option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <p>ATK <span id="sus-atk"></span></p>
+    <p>MAG <span id="sus-mag"></span></p>
+  </div>
+  <div class="box">
+    <h2><img src="imgs/Ralsei.png" align="center">Ralsei</h2>
+    <label for="ral-weapon"><img src="imgs/Scarf.png" align="center"></label>
+    <select id="ral-weapon" onchange="updateRalStats()" style="width:200px;">
+      <option value="RedScarf">RedScarf</option>
+      <option value="Ragger">Ragger</option>
+      <option value="DaintyScarf">DaintyScarf</option>
+      <option value="Ragger2">Ragger2</option>
+      <option value="PuppetScarf">PuppetScarf</option>
+    </select>
+    <br>
+    <label for="ral-armor1"><img src="imgs/Armor1.png" align="center"></label>
+    <select id="ral-armor1" onchange="updateRalStats()" style="width:200px; margin-left:11px;">
+      <option value="Nothing">Nothing</option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <label for="ral-armor2"><img src="imgs/Armor2.png" align="center"></label>
+    <select id="ral-armor2" onchange="updateRalStats()" style="width:200px; margin-left:11px;">
+      <option value="Nothing">Nothing</option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <p>ATK <span id="ral-atk"></span></p>
+    <p>MAG <span id="ral-mag"></span></p>
+  </div>
+  <div class="box">
+    <h2><img src="imgs/Noelle.png" align="center">Noelle</h2>
+    <label for="noe-weapon"><img src="imgs/Ring.png" align="center"></label>
+    <select id="noe-weapon" onchange="updateNoeStats()" style="width:200px;">
+      <option value="SnowRing">SnowRing</option>
+      <option value="FreezeRing">FreezeRing</option>
+      <option value="ThornRing">ThornRing</option>
+    </select>
+    <br>
+    <label for="noe-armor1"><img src="imgs/Armor1.png" align="center"></label>
+    <select id="noe-armor1" onchange="updateNoeStats()" style="width:200px; margin-left:11px;">
+      <option value="Nothing">Nothing</option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <label for="noe-armor2"><img src="imgs/Armor2.png" align="center"></label>
+    <select id="noe-armor2" onchange="updateNoeStats()" style="width:200px; margin-left:11px;">
+      <option value="Nothing">Nothing</option>
+      <option value="IronShackle">IronShackle</option>
+      <option value="Jevilstail">Jevilstail</option>
+      <option value="Dealmaker">Dealmaker</option>
+      <option value="RoyalPin">RoyalPin</option>
+      <option value="FrayedBowtie">FrayedBowtie</option>
+      <option value="BShotBowtie">BShotBowtie</option>
+    </select>
+    <br>
+    <p>ATK <span id="noe-atk"></span></p>
+    <p>MAG <span id="noe-mag"></span></p>
+  </div>
+  <br>
+  <table border="1" cellpadding="10" style="display: inline-block; margin-right: 20px; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>Frame</th>
+        <th style="color: #00a2e8;">Kris Attack</th>
+        <th style="color: #ea79c8;">Susie Attack</th>
+        <th style="color: #b4e41c;"> Ralsei Attack</th>
+        <th style="color: #fcfc04;">Noelle Attack</th>
+      </tr>
+    </thead>
+    <tbody id="damage-table">
+      <!-- table rows will be generated here -->
+    </tbody>
+  </table>
+
+  <table border="1" cellpadding="10" style="display: inline-block; margin-right: 20px; vertical-align: top; margin-top: 20px">
+    <thead>
+      <tr>
+         <th>Buster Spell</th>
+         <th style="color: #edb4ec;">Rude Buster</th>
+         <th style ="color: red;">Red Buster</th>
+      </tr>
+    </thead>
+    <tbody id="buster-table">
+       <!-- we busting in here-->
+    </tbody>
+  </table>
+
+  <table border="1" cellpadding="10" style="display: inline-block; margin-right: 20px; vertical-align: top; margin-top: 20px">
+    <thead>
+      <tr>
+         <th colspan="2" style = "color:cyan;">Ice Shock</th>
+      </tr>
+    </thead>
+    <tbody id="ice-table">
+       <!-- we icing in here-->
+    </tbody>
+  </table>
+
+  <table border="1" cellpadding="10" style="display: inline-block; margin-right: 20px; vertical-align: top; margin-top: 20px">
+    <thead>
+      <tr>
+         <th colspan="2">X-Slash</th>
+      </tr>
+    </thead>
+    <tbody id="x-slash">
+       <!-- X-Slash -->
+    </tbody>
+  </table>
+  <script>
+    // Define function to update the stats in the first box
+    function updateStats() {
+      // Get the selected values for the inputs
+      const chapter = parseInt(document.getElementById("chapter-select").value);
+      const enemy = document.getElementById("enemy-select").value;
+
+      // Update the stats in the box
+      updateKrisStats();
+      updateSusStats();
+      updateRalStats();
+      updateNoeStats();
+    }
+
+    //Function for the armor stats ATK
+    function ArmorATK(armor_name) {
+      if (armor_name == "IronShackle" || armor_name == "FrayedBowtie") {
+        return 1;
+      }
+      else if (armor_name == "Jevilstail") {
+        return 2;
+      }
+      else {
+        return 0;
+      }
+    }
+
+    function ArmorMAG(armor_name) {
+      if (armor_name == "RoyalPin" || armor_name == "FrayedBowtie" || armor_name == "BShotBowtie") {
+        return 1;
+      }
+      else if (armor_name == "Jevilstail" ) {
+        return 2;
+      }
+      else if (armor_name == "Dealmaker") {
+        return 5;
+      }
+      else {
+        return 0;
+      }
+    }
+
+    function ArmorDEF(armor_name) {
+      if (armor_name == "AmberCard") {
+        return 1;
+      }
+      else if (armor_name == "DiceBrace") {
+        return 2;
+      }
+      else {
+        return 0;
+      }
+    }
+    // Define function to update Kris's stats
+    function updateKrisStats() {
+      // Get the selected weapon and armor values for Kris
+      const krisWeapon = document.getElementById("kris-weapon").value;
+      const krisArmor1 = document.getElementById("kris-armor1").value;
+      const krisArmor2 = document.getElementById("kris-armor2").value;
+      const chapter = document.getElementById("chapter-select").value;
+      const kills_pre = Number(document.getElementById("kill-count-pre").value);
+      const kills_post =  Number(document.getElementById("kill-count-post").value);
+
+      const kills = kills_pre + kills_post;
+      // Set Kris's ATK based on the selected weapon
+      if (chapter == 1) {
+        var krisAtk = 10;
+      }
+      else if (chapter == 2) {
+        var krisAtk = 12;
+      }
+      else {
+        var krisAtk = 0;
+      }
+      if (krisWeapon == "SpookySword" || krisWeapon == "BounceBlade") {
+        krisAtk += 2;
+      }
+      else if (krisWeapon === "MechaSaber") {
+        krisAtk += 4;
+      }
+      // Kill Bonus
+
+      if (kills != "") {
+        krisAtk += Math.floor(kills/10)
+      }
+      // Set Kris's ATK based on the selected armor 1
+      krisAtk += ArmorATK(krisArmor1);
+      // Armor 2
+      krisAtk += ArmorATK(krisArmor2);
+      document.getElementById("kris-atk").innerText = krisAtk;
+    updateKrisTable();
+    }
+
+    function updateSusStats() {
+      // Get the selected weapon and armor values for Kris
+      const susWeapon = document.getElementById("sus-weapon").value;
+      const susArmor1 = document.getElementById("sus-armor1").value;
+      const susArmor2 = document.getElementById("sus-armor2").value;
+      const chapter = document.getElementById("chapter-select").value;
+      const kills_pre = Number(document.getElementById("kill-count-pre").value);
+      const kills_post =  Number(document.getElementById("kill-count-post").value);
+
+      const kills = kills_pre + kills_post;
+
+      // Set Kris's ATK based on the selected weapon
+      if (chapter == 1) {
+        var susAtk = 14;
+      }
+      else if (chapter == 2) {
+        var susAtk = 16;
+      }
+      else {
+        var susAtk = 0;
+      }
+      if (susWeapon == "BraveAx") {
+        susAtk += 2;
+      }
+      else if (susWeapon === "AutoAx") {
+        susAtk += 4;
+      }
+      else if (susWeapon == "DevilsKnife"){
+        susAtk += 5;
+      }
+
+      if (kills != "") {
+        console.log("kills");
+        console.log(kills);
+        susAtk += Math.floor(kills/10)
+      }
+      var susMag = 1;
+      // Set Kris's ATK based on the selected armor 1
+      susAtk += ArmorATK(susArmor1);
+      // Armor 2
+      susAtk += ArmorATK(susArmor2);
+      susMag += ArmorMAG(susArmor1);
+      susMag += ArmorMAG(susArmor2);
+      document.getElementById("sus-atk").innerText = susAtk;
+      document.getElementById("sus-mag").innerText = susMag;
+    updateKrisTable();
+    }
+
+    function updateRalStats() {
+      // Get the selected weapon and armor values for Kris
+      const ralWeapon = document.getElementById("ral-weapon").value;
+      const ralArmor1 = document.getElementById("ral-armor1").value;
+      const ralArmor2 = document.getElementById("ral-armor2").value;
+      const chapter = document.getElementById("chapter-select").value;
+      const kills_pre = Number(document.getElementById("kill-count-pre").value);
+      const kills_post =  Number(document.getElementById("kill-count-post").value);
+
+      const kills = kills_pre + kills_post;
+
+      // Set Kris's ATK based on the selected weapon
+      if (chapter == 1) {
+        var ralAtk = 8;
+        var ralMag = 7;
+      }
+      else if (chapter == 2) {
+        var ralAtk = 10;
+        var ralMag = 9;
+      }
+      else {
+        var ralAtk = 0;
+        var ralMag = 0;
+      }
+      if (ralWeapon == "Ragger") {
+        ralAtk += 2;
+      }
+      else if (ralWeapon === "Ragger2") {
+        ralAtk += 5;
+      }
+      else if (ralWeapon == "PuppetScarf"){
+        ralAtk += 10;
+      }
+      
+      if (kills != "") {
+        ralAtk += Math.floor(kills/10)
+      }
+      // Set Kris's ATK based on the selected armor 1
+      ralAtk += ArmorATK(ralArmor1);
+      // Armor 2
+      ralAtk += ArmorATK(ralArmor2);
+      ralMag += ArmorMAG(ralArmor1);
+      ralMag += ArmorMAG(ralArmor2);
+      document.getElementById("ral-atk").innerText = ralAtk;
+      document.getElementById("ral-mag").innerText = ralMag;
+    updateKrisTable();
+    }
+
+
+    function updateNoeStats() {
+      // Get the selected weapon and armor values for Kris
+      const noeWeapon = document.getElementById("noe-weapon").value;
+      const noeArmor1 = document.getElementById("noe-armor1").value;
+      const noeArmor2 = document.getElementById("noe-armor2").value;
+      const chapter = document.getElementById("chapter-select").value;
+      const kills_pre = Number(document.getElementById("kill-count-pre").value);
+      const kills_post =  Number(document.getElementById("kill-count-post").value);
+
+      const kills = kills_pre + kills_post;
+
+      // Set Kris's ATK based on the selected weapon
+      var noeAtk = 3;
+      var noeMag = 11;
+      if (noeWeapon == "FreezeRing") {
+        noeAtk += 4;
+        noeMag += 4;
+      }
+      else if (noeWeapon === "ThornRing") {
+        noeAtk += 14;
+        noeMag += 12;
+      }
+      console.log(kills_pre);
+      if (kills !== "" && kills_pre !== "") {
+        noeAtk += Math.floor(kills/4) - Math.floor(kills_pre/4)
+      }
+      // Set Kris's ATK based on the selected armor 1
+      noeAtk += ArmorATK(noeArmor1);
+      // Armor 2
+      noeAtk += ArmorATK(noeArmor2);
+      noeMag += ArmorMAG(noeArmor1);
+      noeMag += ArmorMAG(noeArmor2);
+      document.getElementById("noe-atk").innerText = noeAtk;
+      document.getElementById("noe-mag").innerText = noeMag;
+    updateKrisTable();
+    }
+    const enemySelect = document.getElementById("enemy-select");
+    const chapterSelect = document.getElementById("chapter-select");
+
+    function updateChapter() {
+      const chapter = chapterSelect.value;
+      enemySelect.innerHTML = "<option value=''>[Select Enemy]</option>";
+
+      if (chapter == "1") {
+        enemySelect.innerHTML += "<option value='Lancer'>Lancer</option>" +
+          "<option value='Rudinn'>Rudinn</option>" +
+          "<option value='Hathy'>Hathy</option>" +
+          "<option value='C Round'>C Round</option>" +
+          "<option value='Jigsawry'>Jigsawry</option>" +
+          "<option value='Ponman'>Ponman</option>" +
+          "<option value='K Round'>K Round</option>" +
+          "<option value='Rabbick'>Rabbick</option>" +
+          "<option value='Bloxer'>Bloxer</option>" +
+          "<option value='Clover (Ch 1)'>Clover (Ch 1)</option>" +
+          "<option value='Susie'>Susie</option>" +
+          "<option value='Rudinn Ranger'>Rudinn Ranger</option>" +
+          "<option value='Head Hathy'>Head Hathy</option>" +
+          "<option value='Jevil'>Jevil</option>" +
+          "<option value='King'>King</option>";
+      } else if (chapter == "2") {
+        enemySelect.innerHTML +=
+        "<option value='Clover (Ch 2)'>Clover (Ch 2)</option>" +
+          "<option value='Werewire'>Werewire</option>" +
+          "<option value='Tasque'>Tasque</option>" +
+          "<option value='Virovirokun'>Virovirokun</option>" +
+          "<option value='Berdly'>Berdly</option>" +
+          "<option value='Poppup'>Poppup</option>" +
+          "<option value='Ambyu-Lance'>Ambyu-Lance</option>" +
+          "<option value='Spamton'>Spamton</option>" +
+          "<option value='Maus'>Maus</option>" +
+          "<option value='Swatchling'>Swatchling</option>" +
+          "<option value='Spamton NEO [Basement]'>Spamton NEO [Basement]</option>" +
+          "<option value='Mauswheel'>Mauswheel</option>" +
+          "<option value='Queen'>Queen</option>" +
+          "<option value='Spamton NEO [Snowgrave]'>Spamton NEO [Snowgrave]</option>";
+      }
+
+      updateStats();
+      updateKrisStats();
+      updateSusStats();
+      updateRalStats();
+      updateNoeStats();
+      updateEnemyStats();
+    }
+
+    function updateEnemyStats() {
+      console.log("hey");
+      const enemy = enemySelect.value;
+      const susArmor1 = document.getElementById("sus-armor1").value;
+      const susArmor2 = document.getElementById("sus-armor2").value;
+      console.log(susArmor1);
+      let susDef = 2;
+      susDef += ArmorDEF(susArmor1);
+      susDef += ArmorDEF(susArmor2);
+      let def = 0;
+
+      if (enemy == "Lancer" || enemy == "Ponman" || enemy == "Rabbick" || enemy == "Clover (Ch 1)") {
+        def = 1;
+      }
+      else if (enemy == "Bloxer") {
+        def = 2;
+      }
+      else if (enemy == "K Round") {
+        def = 3;
+      }
+      else if (enemy == "Jevil") {
+        def = 5;
+      }
+      else if (enemy == "Susie") {
+        def = -5 + susDef;
+      }
+      else if (enemy == "Spamton NEO [Snowgrave]") {
+        def = -27;
+      }
+
+      
+  var jevilField = document.getElementById("jevil-field");
+  var pirouettes = Number(document.getElementById("jevil-special-pirouettes").value);
+  console.log("Pirouettes");
+  console.log(pirouettes);
+  if (enemy === "Jevil") {
+    jevilField.style.display = "block";
+    def = 5 - 4 * pirouettes;
+    if (def < -16) {
+      def = -16;
+    }
+  } else {
+    jevilField.style.display = "none";
+  }
+  document.getElementById("enemy-def").innerText = def;
+  updateStats();
+    }
+
+    function checkInput() {
+  var input = document.getElementById("kill-count-post");
+  if (isNaN(input.value) || parseInt(input.value) != input.value || input.value < 0) {
+    input.value = 0;
+  }
+}
+
+    //Define accuracy based in how many frames away
+    function PointsAccuracy(accuracy) {
+      if (accuracy == "Perfect") {
+        return 150;
+      }
+      else {
+        frameoff = " frames off"
+        if (accuracy == "1 frame off") {
+          return 120;
+        }
+        else if (accuracy == "2" + frameoff) {
+          return 110;
+        }
+        else if (accuracy.charAt(2) == "f") {
+          return 94 - 2 *(Number(accuracy.charAt(0)) - 3)
+        }
+        else if (accuracy.charAt(3) == "f") {
+          return 80 - 2 * (Number(accuracy.charAt(0) + accuracy.charAt(1)) - 10)
+        }
+        else
+          return 0;
+      }
+    }
+
+    function GMLRound(x) {
+      rounded = Math.round(x);
+      if (rounded % 2 !== 0 && (x - 0.5) % 1 === 0) {
+        rounded -= 1;
+      }
+      return rounded;
+    }
+
+    function calculateDamage(ATK, DEF, ACC) {
+      let damage = (ATK * ACC) / 20 - (3 * DEF);
+      damage = GMLRound(damage);
+      if (damage < 0) {
+        damage = 0;
+      }
+      return damage
+    }
+
+    function rudeDamage(ATK, MAG, DEF, MASH) {
+      var busterDmg = 11*ATK+5*MAG-3*DEF;
+      if (MASH == true) {
+        busterDmg += 30;
+      }
+      return busterDmg;
+    }
+
+    function redDamage(ATK, MAG, DEF, MASH) {
+      var busterDmg = 13*ATK+6*MAG-6*DEF+90;
+      if (MASH == true) {
+        busterDmg += 30;
+      }
+      return busterDmg;
+    }
+
+    function IceShockDmg(MAG, BONUS) {
+      //Bonus should be between 1 and 10 (integers, including)
+      return 30*(MAG-10)+90+BONUS;
+    }
+
+    function XSlashDmg(ATK, DEF) {
+      let damage = (ATK*150/20 - 3*DEF)*1.25;
+      return GMLRound(damage);
+    }
+     
+    //DMG Table Kris
+    const krisAtkInput = document.getElementById("kris-atk");
+    const susAtkInput = document.getElementById("sus-atk");
+    const ralAtkInput = document.getElementById("ral-atk");
+    const noeAtkInput = document.getElementById("noe-atk");
+    const susMagInput = document.getElementById("sus-mag");
+    const noeMagInput = document.getElementById("noe-mag");
+    const enemyDefInput = document.getElementById("enemy-def");
+    const damageTable = document.getElementById("damage-table");
+    const busterTable = document.getElementById("buster-table");
+    const iceTable = document.getElementById("ice-table");
+    const xSlashTable = document.getElementById("x-slash");
+
+    // generate initial table rows
+    updateKrisTable();
+
+    // function to generate and update table rows
+    function updateKrisTable() {
+      damageTable.innerHTML = ""; // clear previous rows
+
+      // generate new rows
+      for (let i = 1; i <= 16; i++) {
+        const row = document.createElement("tr");
+        let RowAccuracy = ""
+        if (i == 1) {
+          RowAccuracy = "Perfect"
+        }
+        else if (i == 2) {
+          RowAccuracy = "1 frame off"
+        }
+        else if (i < 16) {
+          RowAccuracy = String(i - 1) + " frames off"
+        }
+        else if (i == 16) {
+          RowAccuracy = "Miss"
+        }
+        const frameCell = document.createElement("td");
+        frameCell.textContent = RowAccuracy;
+        frameCell.style.backgroundColor = "black";
+        frameCell.style.color = "white";
+        frameCell.style.textAlign = "center";
+        row.appendChild(frameCell);
+
+        const damageCell = document.createElement("td");
+        const points = PointsAccuracy(RowAccuracy);
+        damageCell.textContent = calculateDamage(parseInt(krisAtkInput.textContent, 10),parseInt(enemyDefInput.textContent, 10), points);
+        damageCell.style.backgroundColor = "black";
+        damageCell.style.color = "#00a2e8";
+        damageCell.style.textAlign = "center";
+        row.appendChild(damageCell);
+
+        const susCell = document.createElement("td");
+        susCell.textContent = calculateDamage(parseInt(susAtkInput.textContent, 10),parseInt(enemyDefInput.textContent, 10), points);
+        susCell.style.backgroundColor = "black";
+        susCell.style.color = "#ea79c8";
+        susCell.style.textAlign = "center";
+        row.appendChild(susCell);
+
+        const ralCell = document.createElement("td");
+        ralCell.textContent = calculateDamage(parseInt(ralAtkInput.textContent, 10),parseInt(enemyDefInput.textContent, 10), points);
+        ralCell.style.backgroundColor = "black";
+        ralCell.style.color = "#b4e41c";
+        ralCell.style.textAlign = "center";
+        row.appendChild(ralCell);
+
+        damageTable.appendChild(row);
+
+        const noeCell = document.createElement("td");
+        noeCell.textContent = calculateDamage(parseInt(noeAtkInput.textContent, 10),parseInt(enemyDefInput.textContent, 10), points);
+        noeCell.style.backgroundColor = "black";
+        noeCell.style.color = "#fcfc04";
+        noeCell.style.textAlign = "center";
+        row.appendChild(noeCell);
+
+        damageTable.appendChild(row);
+      }
+      busterTable.innerHTML = "";
+      var row = document.createElement("tr");
+
+      const MashzCell = document.createElement("td");
+      MashzCell.textContent = "Mash Z";
+      MashzCell.style.backgroundColor = "black";
+      MashzCell.style.color = "white";
+      row.appendChild(MashzCell);
+
+      const MashzRude = document.createElement("td");
+      MashzRude.textContent = rudeDamage(parseInt(susAtkInput.textContent, 10), parseInt(susMagInput.textContent, 10), parseInt(enemyDefInput.textContent, 10), true);
+      MashzRude.style.backgroundColor = "black";
+      MashzRude.style.color = "#edb4ec";
+      row.appendChild(MashzRude);
+
+      const MashzRed = document.createElement("td");
+      MashzRed.textContent = redDamage(parseInt(susAtkInput.textContent, 10), parseInt(susMagInput.textContent, 10), parseInt(enemyDefInput.textContent, 10), true);
+      MashzRed.style.backgroundColor = "black";
+      MashzRed.style.color = "red";
+      row.appendChild(MashzRed);
+
+      busterTable.appendChild(row);
+
+      var row2 = document.createElement("tr"); 
+
+      const MashzCell2 = document.createElement("td");
+      MashzCell2.textContent = "No Mash Z";
+      MashzCell2.style.backgroundColor = "black";
+      MashzCell2.style.color = "white";
+      row2.appendChild(MashzCell2);
+
+      const MashzRude2 = document.createElement("td");
+      MashzRude2.textContent = rudeDamage(parseInt(susAtkInput.textContent, 10), parseInt(susMagInput.textContent, 10), parseInt(enemyDefInput.textContent, 10), false);
+      MashzRude2.style.backgroundColor = "black";
+      MashzRude2.style.color = "#edb4ec";
+      row2.appendChild(MashzRude2);
+
+      const MashzRed2 = document.createElement("td");
+      MashzRed2.textContent = redDamage(parseInt(susAtkInput.textContent, 10), parseInt(susMagInput.textContent, 10), parseInt(enemyDefInput.textContent, 10), false);
+      MashzRed2.style.backgroundColor = "black";
+      MashzRed2.style.color = "red";
+      row2.appendChild(MashzRed2);
+
+      busterTable.appendChild(row2);
+
+      iceTable.innerHTML = "";
+      
+      row = document.createElement("tr");
+
+      var cell1 = document.createElement("td");
+      cell1.textContent = "Highest Roll";
+      cell1.style.backgroundColor = "black";
+      cell1.style.color = "white";
+      row.appendChild(cell1);
+
+      var cell2 = document.createElement("td");
+      cell2.textContent = IceShockDmg(parseInt(noeMagInput.textContent, 10), 10);
+      cell2.style.backgroundColor = "black";
+      cell2.style.color = "cyan";
+      row.appendChild(cell2);
+
+      iceTable.appendChild(row);
+
+      row = document.createElement("tr");
+
+      cell1 = document.createElement("td");
+      cell1.textContent = "Lowest Roll";
+      cell1.style.backgroundColor = "black";
+      cell1.style.color = "white";
+      row.appendChild(cell1);
+
+      cell2 = document.createElement("td");
+      cell2.textContent = IceShockDmg(parseInt(noeMagInput.textContent, 10), 1);
+      cell2.style.backgroundColor = "black";
+      cell2.style.color = "cyan";
+      row.appendChild(cell2);
+
+      iceTable.appendChild(row);
+
+      xSlashTable.innerHTML = "";
+      
+      row = document.createElement("tr");
+
+      var cell1 = document.createElement("td");
+      cell1.textContent = "Single Slash";
+      cell1.style.backgroundColor = "black";
+      cell1.style.color = "white";
+      row.appendChild(cell1);
+
+      var cell2 = document.createElement("td");
+      cell2.textContent = XSlashDmg(parseInt(krisAtkInput.textContent, 10), parseInt(enemyDefInput.textContent, 10));
+      cell2.style.backgroundColor = "black";
+      cell2.style.color = "white";
+      row.appendChild(cell2);
+
+      xSlashTable.appendChild(row);
+
+      row = document.createElement("tr");
+
+      cell1 = document.createElement("td");
+      cell1.textContent = "Total Damage";
+      cell1.style.backgroundColor = "black";
+      cell1.style.color = "white";
+      row.appendChild(cell1);
+
+      cell2 = document.createElement("td");
+      cell2.textContent = 2 * XSlashDmg(parseInt(krisAtkInput.textContent, 10), parseInt(enemyDefInput.textContent, 10));
+      cell2.style.backgroundColor = "black";
+      cell2.style.color = "white";
+      row.appendChild(cell2);
+
+      xSlashTable.appendChild(row);
+
+    }
+
+        // listen for changes to KRIS ATK input and update table
+        krisAtkInput.addEventListener("input", updateKrisTable);
+    enemyDefInput.addEventListener("input", updateKrisTable);
+    updateKrisTable();
+
+        // Update the enemy list initially
+        updateChapter();
+    updateKrisStats();
+  </script>
+</body>
