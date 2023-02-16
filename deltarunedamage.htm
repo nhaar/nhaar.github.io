@@ -47,7 +47,7 @@
 
 <body>
   <div class="box" style="line-height: 2; width: 300px; height: 400px;">
-    <input type="checkbox" id="show-weird" onclick="showItems()">
+    <input type="checkbox" id="show-weird" onclick="showItems()" onchange="updateStats()">
     <label for="show-weird">Show unusual/unused items?</label>
     <br>
 
@@ -138,10 +138,6 @@
     <h2><img src="imgs/Kris.png" align="center">Kris</h2>
     <label for="kris-weapon"><img src="imgs/Sword.png" align="center"></label>
     <select id="kris-weapon" onchange="updateKrisStats()" style="width:200px;">
-      <option value="WoodBlade">WoodBlade</option>
-      <option value="SpookySword">SpookySword</option>
-      <option value="MechaSaber">MechaSaber</option>
-      <option value="BounceBlade">BounceBlade</option>
     </select>
     <br>
     <label for="kris-armor1"><img src="imgs/Armor1.png" vertical-align="middle" align="center"></label>
@@ -311,10 +307,10 @@
       '<option value=ManeAx">ManeAx</option>' +
       '<option value="RedScarf">RedScarf</option>' +
       '<option value="EverybodyWeapon">EverybodyWeapon</option>' +
-      '<option value=SpookySword">SpookySword</option>' +
+      '<option value="SpookySword">SpookySword</option>' +
       '<option value="BraveAx">BraveAx</option>' +
       '<option value="Devilsknife">Devilsknife</option>' +
-      '<option value=Trefoil">Trefoil</option>' +
+      '<option value="Trefoil">Trefoil</option>' +
       '<option value="Ragger">Ragger</option>' +
       '<option value="DaintyScarf">DaintyScarf</option>' +
       '<option value="TwistedSwd">TwistedSwd</option>' +
@@ -330,7 +326,7 @@
       '<option value="PuppetScarf">PuppetScarf</option>' +
       '<option value="FreezeRing">FreezeRing</option>'
       let kris_weapon = '<option value="WoodBlade">WoodBlade</option>' +
-      '<option value=SpookySword">SpookySword</option>' +
+      '<option value="SpookySword">SpookySword</option>' +
       '<option value="BounceBlade">BounceBlade</option>' +
       '<option value="MechaSaber">MechaSaber</option>'
       let ralsei_weapon ='<option value="RedScarf">RedScarf</option>' +
